@@ -12,4 +12,14 @@ class Product {
     required this.category,
     required this.icon,
   });
+
+  factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
+      id: (map['id'] as num).toInt(),
+      name: map['name'] as String,
+      price: (map['price'] as num).toDouble(),
+      category: map['category'] as String,
+      icon: (map['icon'] as String?) ?? '☕',
+    );
+  }
 }

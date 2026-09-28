@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 
+import '../services/auth_service.dart';
 import 'cashier_screen.dart';
 import 'history_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String username;
-
-  const HomeScreen({
-    super.key,
-    required this.username,
-  });
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final username = AuthService.displayName;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FEY COFFEE'),
+        title: const Text('COFFEE COMET'),
         actions: [
           IconButton(
+            tooltip: 'Keluar',
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            // AuthGate otomatis kembali ke halaman login.
+            onPressed: () => AuthService.signOut(),
           ),
         ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -33,20 +30,11 @@ class HomeScreen extends StatelessWidget {
           children: [
             Text(
               'Halo, $username 👋',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 5),
-
-            const Text(
-              'Selamat datang di sistem kasir FEY COFFEE',
-            ),
-
+            const Text('Selamat datang di sistem kasir COFFEE COMET'),
             const SizedBox(height: 30),
-
             Row(
               children: [
                 Expanded(
@@ -56,9 +44,7 @@ class HomeScreen extends StatelessWidget {
                     value: 'Kasir',
                   ),
                 ),
-
                 const SizedBox(width: 15),
-
                 Expanded(
                   child: _dashboardCard(
                     icon: Icons.history,
@@ -68,18 +54,13 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 30),
-
             SizedBox(
               width: double.infinity,
               height: 60,
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.point_of_sale),
-                label: const Text(
-                  'BUKA KASIR',
-                  style: TextStyle(fontSize: 18),
-                ),
+                label: const Text('BUKA KASIR', style: TextStyle(fontSize: 18)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.brown,
                   foregroundColor: Colors.white,
@@ -87,16 +68,12 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const CashierScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const CashierScreen()),
                   );
                 },
               ),
             ),
-
             const SizedBox(height: 15),
-
             SizedBox(
               width: double.infinity,
               height: 60,
@@ -109,9 +86,7 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const HistoryScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const HistoryScreen()),
                   );
                 },
               ),
@@ -133,29 +108,13 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Icon(
-              icon,
-              size: 40,
-              color: Colors.brown,
-            ),
-
+            Icon(icon, size: 40, color: Colors.brown),
             const SizedBox(height: 10),
-
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-
+            Text(title, style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 5),
-
             Text(
               value,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ),

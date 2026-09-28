@@ -1,30 +1,37 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:kasir_cafe/main.dart';
+import 'package:kasir_cafe/models/product.dart';
+import 'package:kasir_cafe/models/transaction.dart';
+import 'package:kasir_cafe/utils/format.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test('formatRupiah memberi pemisah ribuan', () {
+    expect(formatRupiah(0), 'Rp0');
+    expect(formatRupiah(15000), 'Rp15.000');
+    expect(formatRupiah(1250000), 'Rp1.250.000');
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  test('subtotal keranjang = harga x jumlah', () {
+    final product = Product(
+      id: 1,
+      name: 'Espresso',
+      price: 15000,
+      category: 'Coffee',
+      icon: '☕',
+    );
+    final item = CartProduct(product: product, quantity: 3);
+    expect(item.subtotal, 45000);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  test('Product.fromMap membaca data dari Supabase', () {
+    final product = Product.fromMap({
+      'id': 2,
+      'name': 'Americano',
+      'price': 18000,
+      'category': 'Coffee',
+      'icon': '☕',
+    });
+    expect(product.name, 'Americano');
+    expect(product.price, 18000.0);
   });
 }
